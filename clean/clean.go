@@ -48,7 +48,7 @@ func (c *Clean) clean() {
 }
 
 func (c *Clean) run() {
-	logger.Info("starting clean run")
+	logger.Debug("starting clean")
 	if c.NodeType != "manager" {
 		return
 	}

@@ -35,8 +35,12 @@ logging:
     format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
 
 config:
-    cleanInterval: 20
-    updateInterval: 30
+    # cleanInterval and updateInterval are specified in seconds.
+    cleanInterval: 300
+    updateInterval: 240
+
+    # vacuumInterval specified in hours 
+    vacuumInterval: 24
     region: ""
     nodeType: ""
     localIp: ""

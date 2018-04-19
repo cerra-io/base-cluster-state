@@ -7,12 +7,14 @@ import (
 
 	"docker.io/go-docker"
 	"github.com/cerra-io/base-cluster-state/update"
+	"github.com/cerra-io/base-cluster-state/vacuum"
 )
 
 var (
 	logger   = logrus.WithField("module", "server")
 	cleaner *clean.Clean
 	updater *update.Update
+	vacuumer *vacuum.Vacuum
 )
 
 func Start(conf *vipersubtree.ViperSubtree) {
@@ -38,8 +40,14 @@ func Start(conf *vipersubtree.ViperSubtree) {
 		Client: dockerClient,
 	}
 
+	vacuumer = &vacuum.Vacuum{
+		Client: dockerClient,
+		VacuumInterval: conf.GetDuration("vacuumInterval"),
+	}
+
 	updater.Start()
 	cleaner.Start()
+	vacuumer.Start()
 
 	logger.Info("starting")
 }
@@ -47,6 +55,7 @@ func Start(conf *vipersubtree.ViperSubtree) {
 func Stop() {
 	updater.Stop()
 	cleaner.Stop()
+	vacuumer.Stop()
 
 	logger.Info("stopping")
 }

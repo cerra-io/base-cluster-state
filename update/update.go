@@ -64,7 +64,7 @@ func (u *Update) update() {
 
 
 func (u *Update) run() {
-	logger.Info("starting update run")
+	logger.Debug("starting update")
 	if u.NodeType != "manager" {
 		return
 	}
