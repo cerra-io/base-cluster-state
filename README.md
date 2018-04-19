@@ -12,5 +12,5 @@ Removes downed/downscaled nodes from the swarm.
 - **Refresh (Manager Nodes) every 4 minutes**
 Updates the DynamodDB table with the current Docker Swarm primary Manager.
 
-- **Vacuum (All Nodes) every day between 00 and 01**
-Runs `docker system prune --force` to remove all dangling resources.
+- **Vacuum (All Nodes) every day**
+Runs the equivalent of `docker system prune --force` to remove all dangling resources.
