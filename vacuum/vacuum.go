@@ -57,5 +57,20 @@ func (v *Vacuum) run() {
 	v.Client.ContainersPrune(ctx, filters.NewArgs())
 	v.Client.NetworksPrune(ctx, filters.NewArgs())
 	v.Client.ImagesPrune(ctx, filters.NewArgs())
-	// TODO: Should we prune volumes?
+
+	/*
+		this -> v.Client.VolumesPrune(ctx, filters.NewArgs()) does not work because of https://github.com/docker/for-linux/issues/389
+	 */
+
+	 f := filters.NewArgs(filters.Arg("dangling", "true"))
+	 volumes, err := v.Client.VolumeList(ctx, f)
+	 if err != nil {
+	 	logger.Errorf("Unable to obtain dangling list of volumes")
+	 	return
+	 }
+
+	 for _, vol := range volumes.Volumes {
+	 	err = v.Client.VolumeRemove(ctx, vol.Name, true)
+	 	logger.Errorf("unable to vacuum volume %s", vol.Name)
+	 }
 }
